@@ -10,11 +10,58 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-
+const employeeQ = [
+{
+   type: "input",
+   message: "What is the employee's name?",
+   name: "name"  
+},
+{
+    type: "input",
+    message: "What is the employee's id number?",
+    name: "id"  
+ },
+ {
+    type: "input",
+    message: "What is the employee's email?",
+    name:"email"   
+ },
+ {
+     type: "list",
+     message:"What is the employee's role?",
+     name:"role",
+     choices:["Engineer","Intern","Manager"]
+ }
+];
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-function
+function questionPrompts (){
+    inquirer
+    .prompt(employeeQ).then(function(data){
+        if(this.role = "Engineer"){
+        inquirer
+            .prompt({
+                type:"input",
+                message:"What is the engineer's Github username?",
+                name:"github"
+            })};
+        // if(role="Intern"){
+        // inquirer
+        //     .prompt({
+        //         type:"input",
+        //         message:"What school did this intern attend?",
+        //         name:"school"
+        //     })};
+        if(role="Manager"){
+        inquirer
+            .prompt({
+                type:"input",
+                message:"What is this employees office number?",
+                name:"officeNumber"
+            })};
+        })};
 
+questionPrompts();
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
