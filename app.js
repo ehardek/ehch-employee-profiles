@@ -1,67 +1,117 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const Employee = require("./lib/Employee");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-
+const render = require("./lib/htmlRenderer");
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
+const employees = []
 
-const render = require("./lib/htmlRenderer");
-
-const employeeQ = [
-{
-   type: "input",
-   message: "What is the employee's name?",
-   name: "name"  
-},
-{
-    type: "input",
-    message: "What is the employee's id number?",
-    name: "id"  
- },
- {
-    type: "input",
-    message: "What is the employee's email?",
-    name:"email"   
- },
- {
-     type: "list",
-     message:"What is the employee's role?",
-     name:"role",
-     choices:["Engineer","Intern","Manager"]
- }
+function enQ (){
+    inquirer.prompt([
+   {
+      type: "input",
+      message: "What is the engineer's name?",
+      name: "name"  
+   },
+   {
+       type: "input",
+       message: "What is the engineer's id number?",
+       name: "id"  
+    },
+    {
+       type: "input",
+       message: "What is the engineer's email?",
+       name:"email"   
+    },
+    {
+        type:"input",
+        message: "What is the engineer's github" ,
+        name: "github"
+    }
+   ]).then(data=>{
+       var engineer = new Engineer (data.name,data.id, data.email, data.school)
+       employees.push(engineer);
+       questions();
+    })
+ };
+function mQ (){ 
+   inquirer.prompt([
+    {
+       type: "input",
+       message: "What is the  manager's name?",
+       name: "name"  
+    },
+    {
+        type: "input",
+        message: "What is the  manager's id number?",
+        name: "id"  
+     },
+     {
+        type: "input",
+        message: "What is the  manager's email?",
+        name:"email"   
+     },
+     {
+         type:"input",
+         message: "What is the manager's office number?" ,
+         name: "officeNumber"
+     }
+]).then()};
+const iQ = [
+        {
+           type: "input",
+           message: "What is the intern's name?",
+           name: "name"  
+        },
+        {
+            type: "input",
+            message: "What is the intern's id number?",
+            name: "id"  
+         },
+         {
+            type: "input",
+            message: "What is the intern's email?",
+            name:"email"   
+         },
+         {
+             type:"input",
+             message: "What school did the intern attend?" ,
+             name: "school"
+         }
 ];
 // Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-function questionPrompts (){
-    inquirer
-    .prompt(employeeQ).then(function(data){
-        if(this.role = "Engineer"){
-        inquirer
-            .prompt({
-                type:"input",
-                message:"What is the engineer's Github username?",
-                name:"github"
-            })};
-        // if(role="Intern"){
-        // inquirer
-        //     .prompt({
-        //         type:"input",
-        //         message:"What school did this intern attend?",
-        //         name:"school"
-        //     })};
-        if(role="Manager"){
-        inquirer
-            .prompt({
-                type:"input",
-                message:"What is this employees office number?",
-                name:"officeNumber"
-            })};
-        })};
-
-questionPrompts();
+// and to create objects for each team member (using the correct classes as blueprints!)   
+   function questions(){
+       inquirer.prompt([
+          {
+        type: "list",
+        message:"What is the employee's role?",
+        name:"role",
+        choices:["Engineer","Intern","Manager" ,"I'm Done"]
+       }]).then(data =>{ 
+   switch (data.role) {
+      case "Engineer":
+         enQ()
+      break;
+      case "Intern":
+         
+      break;   
+      case "Manager":
+         System.out.printin("Manager")
+      break;
+      case "I'm Done":
+         fs.writeFile(outputPath, render (employees), function (error){
+            if (error){console.log (error)}
+            else {console.log("Success")}
+         })
+      break;
+   };
+       })};
+questions();
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
@@ -81,4 +131,4 @@ questionPrompts();
 // and Intern classes should all extend from a class named Employee; see the directions
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+
